@@ -7,6 +7,14 @@ inputs:
   tag:
     description: Image name and optionally tag in "name:tag" format
     required: true
+  docker-username:
+    description: Docker secrets for push
+    required: true
+    default: DOCKERHUB_USERNAME
+  docker-password:
+    description: Docker password for push
+    required: true
+    default: DOCKERHUB_TOKEN
   path:
     description: Path to base directory to run `docker build` command (default ".")
     required: false
@@ -115,8 +123,8 @@ runs:
   - name: Login to Docker Hub
     uses: docker/login-action@v3
     with:
-      username: ${{ secrets.DOCKERHUB_USERNAME }}
-      password: ${{ secrets.DOCKERHUB_TOKEN }}
+      username: ${{ inputs.docker-username }}
+      password: ${{ inputs.docker-password }}
 
   - name: Build and push
     uses: docker/build-push-action@v5
